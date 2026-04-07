@@ -58,6 +58,19 @@ function QP.DiscoverSpells()
         local teleportKnown = dest.teleportID and IsSpellKnown(dest.teleportID) or false
         local portalKnown   = dest.portalID   and IsSpellKnown(dest.portalID)   or false
         if teleportKnown or portalKnown then
+            -- If a portal-only entry shares a city name with an already-added entry
+            -- that has a known teleport (e.g. faction-specific Tol Barad teleports
+            -- sharing the same portal spell), skip the redundant portal-only entry.
+            if not teleportKnown then
+                local redundant = false
+                for _, known in ipairs(QP.KnownDestinations) do
+                    if known.city == dest.city and known.teleportKnown then
+                        redundant = true
+                        break
+                    end
+                end
+                if redundant then goto continue end
+            end
             table.insert(QP.KnownDestinations, {
                 city          = dest.city,
                 teleportID    = dest.teleportID,
@@ -65,6 +78,7 @@ function QP.DiscoverSpells()
                 teleportKnown = teleportKnown,
                 portalKnown   = portalKnown,
             })
+            ::continue::
         end
     end
 end
