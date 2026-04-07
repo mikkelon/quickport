@@ -11,16 +11,18 @@ function QP.SecureCast_Init(parentFrame)
     -- trigger the secure action. Default "LeftButtonUp" misses key-down clicks.
     castBtn:RegisterForClicks("AnyDown", "AnyUp")
     castBtn:SetAttribute("*type1", "macro")
+    castBtn:SetAttribute("*type2", "macro")  -- RightButton = portal (SHIFT-ENTER)
 
     castBtn:SetScript("PostClick", function() QP.Close() end)
 
-    -- Override bindings deliver hardware clicks, which SecureActionButtonTemplate
-    -- needs to execute its macro action. ENTER propagation in OnKeyDown is also
-    -- required so the EditBox doesn't swallow the key before the binding sees it.
+    -- Override bindings deliver hardware clicks. SHIFT-ENTER is mapped to
+    -- RightButton so the button can distinguish it from ENTER (LeftButton).
+    -- Shift modifiers are not passed through SetOverrideBindingClick, so
+    -- shift-macrotext1 would never fire — separate button types are required.
     parentFrame:HookScript("OnShow", function()
         if InCombatLockdown() then return end
-        SetOverrideBindingClick(parentFrame, true, "ENTER",       "QuickPortCastButton")
-        SetOverrideBindingClick(parentFrame, true, "SHIFT-ENTER", "QuickPortCastButton")
+        SetOverrideBindingClick(parentFrame, true, "ENTER",       "QuickPortCastButton", "LeftButton")
+        SetOverrideBindingClick(parentFrame, true, "SHIFT-ENTER", "QuickPortCastButton", "RightButton")
     end)
 
     parentFrame:HookScript("OnHide", function()
@@ -39,6 +41,6 @@ function QP.SecureCast_SetDestination(dest)
     local portalName = dest and dest.portalKnown
         and C_Spell.GetSpellInfo(dest.portalID)
         and C_Spell.GetSpellInfo(dest.portalID).name
-    castBtn:SetAttribute("macrotext1",      teleportName and ("/cast " .. teleportName) or nil)
-    castBtn:SetAttribute("shift-macrotext1", portalName   and ("/cast " .. portalName)  or nil)
+    castBtn:SetAttribute("macrotext1", teleportName and ("/cast " .. teleportName) or nil)
+    castBtn:SetAttribute("macrotext2", portalName   and ("/cast " .. portalName)  or nil)
 end
