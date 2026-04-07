@@ -24,11 +24,6 @@ A command palette for mage teleport and portal spells. Press **Ctrl+P** to open 
 
 You can also use `/quickport` or `/qp` to toggle the palette.
 
-## Requirements
-
-- World of Warcraft (Retail) — The War Within
-- Mage character
-
 ## License
 
 GPL v3 — see [LICENSE](LICENSE).
