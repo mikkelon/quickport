@@ -1,7 +1,5 @@
 # QuickPort
 
-<img src="media/quickport.png" width="64" alt="QuickPort icon">
-
 ![Screenshot](media/screenshot-1.png)
 
 A command palette for mage teleport and portal spells. Press **Ctrl+P** to open a searchable popup, type to filter destinations, then press **Enter** to teleport or **Shift+Enter** to open a portal.
