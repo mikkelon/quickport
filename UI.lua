@@ -11,7 +11,6 @@ local COLOR_BORDER      = { 0.25, 0.25, 0.30, 1.0  }
 local COLOR_SELECTED    = { 0.20, 0.45, 0.80, 0.35 }
 local COLOR_TEXT        = { 0.95, 0.95, 0.95, 1.0  }
 local COLOR_HINT        = { 0.55, 0.55, 0.60, 1.0  }
-local COLOR_UNAVAILABLE = { 0.50, 0.50, 0.55, 1.0  }
 local COLOR_SEARCH_BG   = { 0.04, 0.04, 0.06, 1.0  }
 
 local paletteFrame

@@ -43,20 +43,11 @@ QP.Destinations = {
 -- Populated at runtime: only entries where the player knows at least one spell.
 QP.KnownDestinations = {}
 
-local function spellIsKnown(spellName)
-    if not spellName then return false end
-    -- C_Spell.GetSpellInfo returns nil if the spell doesn't exist or isn't known
-    local info = C_Spell.GetSpellInfo(spellName)
-    return info ~= nil
-end
-
 function QP.DiscoverSpells()
     QP.KnownDestinations = {}
     for _, dest in ipairs(QP.Destinations) do
-        local teleportInfo = dest.teleport and C_Spell.GetSpellInfo(dest.teleport)
-        local portalInfo   = dest.portal   and C_Spell.GetSpellInfo(dest.portal)
-        local teleportKnown = teleportInfo ~= nil
-        local portalKnown   = portalInfo   ~= nil
+        local teleportKnown = dest.teleport and C_Spell.GetSpellInfo(dest.teleport) ~= nil
+        local portalKnown   = dest.portal   and C_Spell.GetSpellInfo(dest.portal)   ~= nil
         if teleportKnown or portalKnown then
             table.insert(QP.KnownDestinations, {
                 city          = dest.city,
@@ -64,8 +55,6 @@ function QP.DiscoverSpells()
                 portal        = dest.portal,
                 teleportKnown = teleportKnown,
                 portalKnown   = portalKnown,
-                teleportID    = teleportInfo and teleportInfo.spellID,
-                portalID      = portalInfo   and portalInfo.spellID,
             })
         end
     end
