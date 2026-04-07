@@ -1,6 +1,6 @@
 # QuickPort
 
-![QuickPort icon](media/quickport.png)
+<img src="media/quickport.png" width="64" alt="QuickPort icon">
 
 ![Screenshot](media/screenshot-1.png)
 
