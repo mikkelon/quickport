@@ -8,4 +8,4 @@ ignore:
   - tmp
   - .venv
   - .claude
-  - "*.png"
+  - quickport.png
