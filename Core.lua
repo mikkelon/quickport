@@ -1,5 +1,4 @@
 -- QuickPort: command palette for mage teleport and portal spells.
-QuickPort = {}
 local QP = QuickPort
 
 -- Saved variables are initialised in PLAYER_LOGIN so they are available
@@ -20,8 +19,8 @@ eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:SetScript("OnEvent", function(_, event)
     if event == "PLAYER_LOGIN" then
         -- Gate the addon to mages only
-        local _, classID = UnitClassBase("player")
-        if classID ~= "MAGE" then
+        local _, classFileName = UnitClass("player")
+        if classFileName ~= "MAGE" then
             eventFrame:UnregisterAllEvents()
             return
         end
@@ -58,6 +57,10 @@ end)
 function QP.Open()
     if inCombat then
         print("|cffff4444QuickPort:|r Cannot open during combat.")
+        return
+    end
+    if not QuickPortFrame then
+        print("|cffff4444QuickPort:|r Not available on this character (mages only).")
         return
     end
     QP.UI_Open()

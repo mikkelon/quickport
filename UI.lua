@@ -70,6 +70,7 @@ local function selectIndex(idx)
 end
 
 local function runSearch()
+    if not resultRows[1] then return end  -- guard: rows not yet built
     local query = searchBox:GetText()
     if query == searchBox.placeholder then query = "" end
     currentResults = QP.FilterDestinations(query)
@@ -114,9 +115,6 @@ function QP.UI_Build()
     paletteFrame:SetPoint("TOP", UIParent, "TOP", 0, -180)
     paletteFrame:SetClampedToScreen(true)
 
-    -- Secure buttons live inside the palette frame
-    QP.SecureCast_Init(paletteFrame)
-
     -- Search box container
     local searchContainer = CreateFrame("Frame", nil, paletteFrame, "BackdropTemplate")
     searchContainer:SetHeight(34)
@@ -153,9 +151,13 @@ function QP.UI_Build()
     searchBox:SetScript("OnEditFocusLost",   showPlaceholder)
     searchBox:SetScript("OnTextChanged",     function() runSearch() end)
 
-    -- Route navigation and confirmation keys through the binding system
+    -- Secure cast hooks: must be set up after searchBox exists
+    QP.SecureCast_Init(paletteFrame)
+
+    -- Route navigation keys; ESC propagates to close via UISpecialFrames.
+    -- ENTER is handled by the override binding in SecureCast (SetOverrideBindingClick).
     searchBox:SetScript("OnKeyDown", function(self, key)
-        if key == "ENTER" or key == "SHIFT-ENTER" or key == "ESCAPE" then
+        if key == "ESCAPE" then
             self:SetPropagateKeyboardInput(true)
         elseif key == "UP" then
             self:SetPropagateKeyboardInput(false)
@@ -163,6 +165,8 @@ function QP.UI_Build()
         elseif key == "DOWN" then
             self:SetPropagateKeyboardInput(false)
             selectIndex(selectedIndex + 1)
+        elseif key == "ENTER" then
+            self:SetPropagateKeyboardInput(true)  -- let override binding handle cast
         else
             self:SetPropagateKeyboardInput(false)
         end
@@ -211,7 +215,6 @@ function QP.UI_Open()
     if InCombatLockdown() then return end
     runSearch()
     paletteFrame:Show()
-    QP.SecureCast_BindKeys(paletteFrame)
     searchBox:SetText("")
     searchBox:SetTextColor(COLOR_TEXT[1], COLOR_TEXT[2], COLOR_TEXT[3], 1)
     searchBox:SetFocus()
@@ -219,6 +222,5 @@ end
 
 function QP.UI_Close()
     paletteFrame:Hide()
-    QP.SecureCast_UnbindKeys(paletteFrame)
     searchBox:ClearFocus()
 end

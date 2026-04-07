@@ -1,3 +1,4 @@
+QuickPort = {}
 local QP = QuickPort
 
 -- Master list of all mage teleport/portal destinations.
@@ -52,8 +53,10 @@ end
 function QP.DiscoverSpells()
     QP.KnownDestinations = {}
     for _, dest in ipairs(QP.Destinations) do
-        local teleportKnown = spellIsKnown(dest.teleport)
-        local portalKnown   = spellIsKnown(dest.portal)
+        local teleportInfo = dest.teleport and C_Spell.GetSpellInfo(dest.teleport)
+        local portalInfo   = dest.portal   and C_Spell.GetSpellInfo(dest.portal)
+        local teleportKnown = teleportInfo ~= nil
+        local portalKnown   = portalInfo   ~= nil
         if teleportKnown or portalKnown then
             table.insert(QP.KnownDestinations, {
                 city          = dest.city,
@@ -61,6 +64,8 @@ function QP.DiscoverSpells()
                 portal        = dest.portal,
                 teleportKnown = teleportKnown,
                 portalKnown   = portalKnown,
+                teleportID    = teleportInfo and teleportInfo.spellID,
+                portalID      = portalInfo   and portalInfo.spellID,
             })
         end
     end
