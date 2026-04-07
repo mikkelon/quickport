@@ -212,10 +212,9 @@ end
 
 function QP.UI_Open()
     if InCombatLockdown() then return end
-    runSearch()
-    paletteFrame:Show()
     searchBox:SetText("")
     searchBox:SetTextColor(COLOR_TEXT[1], COLOR_TEXT[2], COLOR_TEXT[3], 1)
+    paletteFrame:Show()
     searchBox:SetFocus()
 end
 

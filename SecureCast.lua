@@ -30,11 +30,15 @@ function QP.SecureCast_Init(parentFrame)
 end
 
 -- Update macro text for the selected destination. Outside combat only.
--- Uses /cast <spellName> — the macro engine handles the actual cast internally.
+-- Looks up localized spell names at runtime so /cast works on all locales.
 function QP.SecureCast_SetDestination(dest)
     if InCombatLockdown() then return end
-    castBtn:SetAttribute("macrotext1",
-        dest and dest.teleportKnown and ("/cast " .. dest.teleport) or nil)
-    castBtn:SetAttribute("shift-macrotext1",
-        dest and dest.portalKnown   and ("/cast " .. dest.portal)   or nil)
+    local teleportName = dest and dest.teleportKnown
+        and C_Spell.GetSpellInfo(dest.teleportID)
+        and C_Spell.GetSpellInfo(dest.teleportID).name
+    local portalName = dest and dest.portalKnown
+        and C_Spell.GetSpellInfo(dest.portalID)
+        and C_Spell.GetSpellInfo(dest.portalID).name
+    castBtn:SetAttribute("macrotext1",      teleportName and ("/cast " .. teleportName) or nil)
+    castBtn:SetAttribute("shift-macrotext1", portalName   and ("/cast " .. portalName)  or nil)
 end

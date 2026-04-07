@@ -5,7 +5,7 @@
 ## Author: mikkelon
 ## Version: 1.0.0
 ## IconTexture: Interface\AddOns\QuickPort\quickport.tga
-## SavedVariables: QuickPortDB
+## X-Curse-Project-ID: XXXXX
 
 SpellData.lua
 FuzzyMatch.lua

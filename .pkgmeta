@@ -1,0 +1,11 @@
+package-as: QuickPort
+
+ignore:
+  - .github
+  - .gitignore
+  - README.md
+  - deploy.sh
+  - tmp
+  - .venv
+  - .claude
+  - "*.png"

@@ -1,20 +1,14 @@
 -- QuickPort: command palette for mage teleport and portal spells.
 local QP = QuickPort
 
--- Saved variables are initialised in PLAYER_LOGIN so they are available
--- before we touch them (WoW populates SavedVariables before PLAYER_LOGIN).
--- QuickPortDB = {}  -- declared in .toc SavedVariables
-
-local inCombat = false
-
 -- ── Event handling ──────────────────────────────────────────────────────────
 
 local eventFrame = CreateFrame("Frame")
+local initialized = false
 
 eventFrame:RegisterEvent("PLAYER_LOGIN")
 eventFrame:RegisterEvent("SPELLS_CHANGED")
 eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 
 eventFrame:SetScript("OnEvent", function(_, event)
     if event == "PLAYER_LOGIN" then
@@ -25,37 +19,26 @@ eventFrame:SetScript("OnEvent", function(_, event)
             return
         end
 
-        -- Initialise saved variables
-        QuickPortDB = QuickPortDB or {}
-
-        -- Set default keybinding on first ever load
-        if not QuickPortDB.bindingSet then
-            SetBinding("CTRL-P", "QUICKPORT_TOGGLE")
-            SaveBindings(GetCurrentBindingSet())
-            QuickPortDB.bindingSet = true
-        end
-
         QP.DiscoverSpells()
         QP.UI_Build()
+        initialized = true
 
     elseif event == "SPELLS_CHANGED" then
-        QP.DiscoverSpells()
+        if initialized then
+            QP.DiscoverSpells()
+        end
 
     elseif event == "PLAYER_REGEN_DISABLED" then
-        inCombat = true
         if QuickPortFrame and QuickPortFrame:IsShown() then
             QP.Close()
         end
-
-    elseif event == "PLAYER_REGEN_ENABLED" then
-        inCombat = false
     end
 end)
 
 -- ── Open / Close ────────────────────────────────────────────────────────────
 
 function QP.Open()
-    if inCombat then
+    if InCombatLockdown() then
         print("|cffff4444QuickPort:|r Cannot open during combat.")
         return
     end

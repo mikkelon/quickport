@@ -1,43 +1,51 @@
+-- Key binding category header shown in the WoW Key Bindings UI.
+BINDING_HEADER_QUICKPORT = "QuickPort"
+
 QuickPort = {}
 local QP = QuickPort
 
 -- Master list of all mage teleport/portal destinations.
--- Spell names follow the stable "Teleport: City" / "Portal: City" convention.
--- teleport and/or portal may be nil when the spell doesn't exist for that category.
+-- teleportID / portalID are spell IDs; nil when the spell doesn't exist for
+-- that faction or destination. Using IDs ensures the addon works on all
+-- locales — spell names are looked up at runtime via C_Spell.GetSpellInfo.
 QP.Destinations = {
     -- Alliance
-    { city = "Stormwind",           teleport = "Teleport: Stormwind",           portal = "Portal: Stormwind" },
-    { city = "Ironforge",           teleport = "Teleport: Ironforge",           portal = "Portal: Ironforge" },
-    { city = "Darnassus",           teleport = "Teleport: Darnassus",           portal = "Portal: Darnassus" },
-    { city = "Exodar",              teleport = "Teleport: Exodar",              portal = "Portal: Exodar" },
-    { city = "Theramore",           teleport = "Teleport: Theramore",           portal = "Portal: Theramore" },
-    { city = "Boralus",             teleport = "Teleport: Boralus",             portal = "Portal: Boralus" },
-    { city = "Stormshield",         teleport = "Teleport: Stormshield",         portal = "Portal: Stormshield" },
+    { city = "Stormwind",              teleportID = 3561,   portalID = 10059  },
+    { city = "Ironforge",              teleportID = 3562,   portalID = 11416  },
+    { city = "Darnassus",              teleportID = 3565,   portalID = 11419  },
+    { city = "Exodar",                 teleportID = 32271,  portalID = 32266  },
+    { city = "Theramore",              teleportID = 49359,  portalID = 49360  },
+    { city = "Boralus",                teleportID = 281403, portalID = 267877 },
+    { city = "Stormshield",            teleportID = 176248, portalID = 176246 },
 
     -- Horde
-    { city = "Orgrimmar",           teleport = "Teleport: Orgrimmar",           portal = "Portal: Orgrimmar" },
-    { city = "Undercity",           teleport = "Teleport: Undercity",           portal = "Portal: Undercity" },
-    { city = "Thunder Bluff",       teleport = "Teleport: Thunder Bluff",       portal = "Portal: Thunder Bluff" },
-    { city = "Silvermoon City",     teleport = "Teleport: Silvermoon City",     portal = "Portal: Silvermoon City" },
-    { city = "Stonard",             teleport = "Teleport: Stonard",             portal = "Portal: Stonard" },
-    { city = "Dazar'alor",          teleport = "Teleport: Dazar'alor",          portal = "Portal: Dazar'alor" },
-    { city = "Warspear",            teleport = "Teleport: Warspear",            portal = "Portal: Warspear" },
+    { city = "Orgrimmar",              teleportID = 3567,   portalID = 11417  },
+    { city = "Undercity",              teleportID = 3563,   portalID = 11418  },
+    { city = "Thunder Bluff",          teleportID = 3566,   portalID = 11420  },
+    { city = "Silvermoon City",        teleportID = 32272,  portalID = 32267  },
+    { city = "Stonard",                teleportID = 49358,  portalID = 49361  },
+    { city = "Dazar'alor",             teleportID = 281404, portalID = 281402 },
+    { city = "Warspear",               teleportID = 176242, portalID = 176244 },
 
     -- Neutral / Expansion hubs
-    { city = "Shattrath",           teleport = "Teleport: Shattrath",           portal = "Portal: Shattrath" },
-    { city = "Dalaran (Northrend)", teleport = "Teleport: Dalaran",             portal = "Portal: Dalaran" },
-    { city = "Dalaran (Broken Isles)", teleport = "Teleport: Dalaran - Broken Isles", portal = "Portal: Dalaran - Broken Isles" },
-    { city = "Tol Barad",           teleport = "Teleport: Tol Barad",           portal = "Portal: Tol Barad" },
-    { city = "Vale of Eternal Blossoms", teleport = "Teleport: Vale of Eternal Blossoms", portal = "Portal: Vale of Eternal Blossoms" },
-    { city = "Oribos",              teleport = "Teleport: Oribos",              portal = "Portal: Oribos" },
-    { city = "Valdrakken",          teleport = "Teleport: Valdrakken",          portal = "Portal: Valdrakken" },
-    { city = "Dornogal",            teleport = "Teleport: Dornogal",            portal = "Portal: Dornogal" },
+    { city = "Shattrath",              teleportID = 33690,  portalID = 33691  },
+    { city = "Dalaran (Northrend)",    teleportID = 53140,  portalID = 53142  },
+    { city = "Dalaran (Broken Isles)", teleportID = 224869, portalID = 224871 },
+    -- Tol Barad has faction-specific teleport spells; only the player's faction
+    -- version will be known, so both entries are listed and DiscoverSpells
+    -- filters to whichever (if any) the player knows.
+    { city = "Tol Barad",              teleportID = 88342,  portalID = 88345  }, -- Alliance
+    { city = "Tol Barad",              teleportID = 88344,  portalID = 88345  }, -- Horde
+    { city = "Vale of Eternal Blossoms", teleportID = 132627, portalID = 132620 },
+    { city = "Oribos",                 teleportID = 344587, portalID = 344597 },
+    { city = "Valdrakken",             teleportID = 395277, portalID = 395289 },
+    { city = "Dornogal",               teleportID = 446540, portalID = 446534 },
 
     -- Special: teleport only
-    { city = "Hall of the Guardian", teleport = "Teleport: Hall of the Guardian", portal = nil },
+    { city = "Hall of the Guardian",   teleportID = 193759, portalID = nil    },
 
-    -- Special: non-standard spell names
-    { city = "Dalaran (Ancient)",   teleport = "Ancient Teleport: Dalaran",     portal = "Ancient Portal: Dalaran" },
+    -- Special: non-standard (Ancient Tome of Teleport/Portal: Dalaran)
+    { city = "Dalaran (Ancient)",      teleportID = 120145, portalID = 120146 },
 }
 
 -- Populated at runtime: only entries where the player knows at least one spell.
@@ -46,13 +54,13 @@ QP.KnownDestinations = {}
 function QP.DiscoverSpells()
     QP.KnownDestinations = {}
     for _, dest in ipairs(QP.Destinations) do
-        local teleportKnown = dest.teleport and C_Spell.GetSpellInfo(dest.teleport) ~= nil
-        local portalKnown   = dest.portal   and C_Spell.GetSpellInfo(dest.portal)   ~= nil
+        local teleportKnown = dest.teleportID and IsSpellKnown(dest.teleportID) or false
+        local portalKnown   = dest.portalID   and IsSpellKnown(dest.portalID)   or false
         if teleportKnown or portalKnown then
             table.insert(QP.KnownDestinations, {
                 city          = dest.city,
-                teleport      = dest.teleport,
-                portal        = dest.portal,
+                teleportID    = dest.teleportID,
+                portalID      = dest.portalID,
                 teleportKnown = teleportKnown,
                 portalKnown   = portalKnown,
             })
