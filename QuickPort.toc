@@ -1,4 +1,5 @@
 ## Interface: 120100
+## LoadOutOfDate: 1
 ## Title: QuickPort
 ## Notes: Command palette for mage teleport and portal spells. Press Ctrl+P to open.
 ## Author: mikkelon
