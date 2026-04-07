@@ -5,7 +5,7 @@
 ## Author: mikkelon
 ## Version: 1.0.0
 ## IconTexture: Interface\AddOns\QuickPort\media\quickport.tga
-## X-Curse-Project-ID: XXXXX
+## X-Curse-Project-ID: 1507577
 
 SpellData.lua
 FuzzyMatch.lua
