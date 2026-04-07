@@ -40,6 +40,7 @@ QP.Destinations = {
     { city = "Oribos",                 teleportID = 344587, portalID = 344597 },
     { city = "Valdrakken",             teleportID = 395277, portalID = 395289 },
     { city = "Dornogal",               teleportID = 446540, portalID = 446534 },
+    { city = "Silvermoon City",        teleportID = 1259190, portalID = 1259194 }, -- Midnight hub
 
     -- Special: teleport only
     { city = "Hall of the Guardian",   teleportID = 193759, portalID = nil    },
