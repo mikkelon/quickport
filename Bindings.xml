@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="QUICKPORT_TOGGLE" description="Toggle QuickPort palette" default="CTRL-P" header="QUICKPORT">
+        QuickPort.Toggle()
+    </Binding>
+</Bindings>

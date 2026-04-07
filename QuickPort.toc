@@ -1,0 +1,12 @@
+## Interface: 120100
+## Title: QuickPort
+## Notes: Command palette for mage teleport and portal spells. Press Ctrl+P to open.
+## Author: mikkelon
+## Version: 1.0.0
+## SavedVariables: QuickPortDB
+
+SpellData.lua
+FuzzyMatch.lua
+SecureCast.lua
+UI.lua
+Core.lua
