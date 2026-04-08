@@ -8,4 +8,6 @@ ignore:
   - tmp
   - .venv
   - .claude
-  - quickport.png
+  - LICENSE
+  - media/screenshot-1.png
+  - media/quickport.png
