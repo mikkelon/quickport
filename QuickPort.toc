@@ -3,7 +3,7 @@
 ## Title: QuickPort
 ## Notes: Command palette for mage teleport and portal spells. Press Ctrl+P to open.
 ## Author: mikkelon
-## Version: 1.0.2
+## Version: 1.1.0
 ## IconTexture: Interface\AddOns\QuickPort\media\quickport.tga
 ## SavedVariables: QuickPortDB
 ## X-Curse-Project-ID: 1507577
