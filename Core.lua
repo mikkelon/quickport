@@ -19,8 +19,10 @@ eventFrame:SetScript("OnEvent", function(_, event)
             return
         end
 
+        QP.InitDB()
         QP.DiscoverSpells()
         QP.UI_Build()
+        QP.BuildOptionsPanel()
         initialized = true
 
     elseif event == "SPELLS_CHANGED" then
@@ -65,4 +67,11 @@ end
 
 SLASH_QUICKPORT1 = "/quickport"
 SLASH_QUICKPORT2 = "/qp"
-SlashCmdList["QUICKPORT"] = function() QP.Toggle() end
+SlashCmdList["QUICKPORT"] = function(msg)
+    msg = msg and strtrim(msg:lower()) or ""
+    if msg == "settings" or msg == "options" then
+        Settings.OpenToCategory(QP.settingsCategory:GetID())
+    else
+        QP.Toggle()
+    end
+end

@@ -5,10 +5,12 @@
 ## Author: mikkelon
 ## Version: 1.0.2
 ## IconTexture: Interface\AddOns\QuickPort\media\quickport.tga
+## SavedVariables: QuickPortDB
 ## X-Curse-Project-ID: 1507577
 
 SpellData.lua
 FuzzyMatch.lua
 SecureCast.lua
 UI.lua
+Options.lua
 Core.lua

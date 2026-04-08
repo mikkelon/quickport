@@ -49,10 +49,16 @@ QP.Destinations = {
 	{ city = "Dalaran (Ancient)", teleportID = 120145, portalID = 120146 },
 }
 
--- Populated at runtime: only entries where the player knows at least one spell.
+-- Populated at runtime: all entries where the player knows at least one spell.
+-- Used by the options panel to show all available destinations (including hidden).
+QP.AllKnownDestinations = {}
+
+-- Subset of AllKnownDestinations with hidden destinations removed.
+-- Used by the command palette.
 QP.KnownDestinations = {}
 
 function QP.DiscoverSpells()
+	QP.AllKnownDestinations = {}
 	QP.KnownDestinations = {}
 	for _, dest in ipairs(QP.Destinations) do
 		local teleportKnown = dest.teleportID and IsSpellKnown(dest.teleportID) or false
@@ -63,7 +69,7 @@ function QP.DiscoverSpells()
 			-- sharing the same portal spell), skip the redundant portal-only entry.
 			local redundant = false
 			if not teleportKnown then
-				for _, known in ipairs(QP.KnownDestinations) do
+				for _, known in ipairs(QP.AllKnownDestinations) do
 					if known.city == dest.city and known.teleportKnown then
 						redundant = true
 						break
@@ -71,13 +77,17 @@ function QP.DiscoverSpells()
 				end
 			end
 			if not redundant then
-				table.insert(QP.KnownDestinations, {
+				local entry = {
 					city = dest.city,
 					teleportID = dest.teleportID,
 					portalID = dest.portalID,
 					teleportKnown = teleportKnown,
 					portalKnown = portalKnown,
-				})
+				}
+				table.insert(QP.AllKnownDestinations, entry)
+				if not QP.IsDestinationHidden(dest.city) then
+					table.insert(QP.KnownDestinations, entry)
+				end
 			end
 		end
 	end
